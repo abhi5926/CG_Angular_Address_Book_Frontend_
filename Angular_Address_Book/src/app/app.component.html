@@ -1,0 +1,78 @@
+<header>
+  <div class="header-container">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1gUREWrhNxUHccdi2SduWs5kn9fEH0SK82g&s" alt="Address Book Icon" class="logo">
+    <h1>ADDRESS BOOK</h1>
+  </div>
+</header>
+
+  <div class="container">
+    <!-- Header row with text and button hidden when form is open -->
+    <div class="header-row" *ngIf="!isFormOpen">
+      <h2>Person Details</h2>
+      <button class="add-person" (click)="openForm()">+ Add Person</button>
+    </div>
+  
+    <!-- Table hidden when form is open -->
+    <div class="table-container" *ngIf="!isFormOpen">
+      <table>
+        <thead>
+          <tr>
+            <th>Fullname</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let person of persons; let i = index">
+            <td data-label="Fullname"><input [(ngModel)]="person.fullname" [disabled]="editingIndex !== i"/></td>
+            <td data-label="Address"><input [(ngModel)]="person.address" [disabled]="editingIndex !== i"/></td>
+            <td data-label="City"><input [(ngModel)]="person.city" [disabled]="editingIndex !== i"/></td>
+            <td data-label="State"><input [(ngModel)]="person.state" [disabled]="editingIndex !== i"/></td>
+            <td data-label="Zip Code"><input [(ngModel)]="person.zip" [disabled]="editingIndex !== i"/></td>
+            <td data-label="Phone"><input [(ngModel)]="person.phone" [disabled]="editingIndex !== i"/></td>
+            <td data-label="Actions">
+              <button *ngIf="editingIndex !== i" (click)="editPerson(i)">📝</button>
+              <button *ngIf="editingIndex === i" (click)="saveEdit()">✔</button>
+              <button (click)="deletePerson(i)">❌ </button>  
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- Form container -->
+<div class="form-container" *ngIf="isFormOpen">
+  <div class="form-header">
+    <h3>PERSON ADDRESS FORM</h3>
+    <button class="close-btn" (click)="closeForm()">✖</button>
+  </div>
+  <div class="form-box">
+    <label for="fullname">Full Name</label>
+    <input type="text" [(ngModel)]="newPerson.fullname">
+    
+    <label for="phone">Phone Number</label>
+    <input type="text" [(ngModel)]="newPerson.phone">
+    
+    <label for="address">Address</label>
+    <textarea [(ngModel)]="newPerson.address"></textarea>
+    
+    <div class="select-group">
+      <input type="text" [(ngModel)]="newPerson.city" placeholder="City">
+      <input type="text" [(ngModel)]="newPerson.state" placeholder="State">
+      <input type="text" [(ngModel)]="newPerson.zip" placeholder="Zip Code">
+    </div>
+    
+    <div class="form-buttons">
+      <button class="add-btn" (click)="addNewPerson()">Add</button>
+      <button class="reset-btn" (click)="resetForm()">Reset</button>
+    </div>
+  </div>
+</div>
+
+
+<router-outlet></router-outlet>
